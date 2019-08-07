@@ -45,17 +45,62 @@ init =
 ---- UPDATE ----
 
 
+type ArticleNumber
+    = Article1
+    | Article2
+    | Article3
+    | Article4
+
+
 type Msg
-    = Expand Article
-    | Shrink Article
+    = Toggle ArticleNumber
+
+
+toggle : Article -> Article
+toggle article =
+    { article | isExpanded = not article.isExpanded }
+
+
+modifyArticle : (Article -> Article) -> ArticleNumber -> Model -> Model
+modifyArticle function number model =
+    case number of
+        Article1 ->
+            { model | article1 = function model.article1 }
+
+        Article2 ->
+            { model | article2 = function model.article2 }
+
+        Article3 ->
+            { model | article3 = function model.article3 }
+
+        Article4 ->
+            { model | article4 = function model.article4 }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+        -- Expand number ->
+        --     ( modifyArticle open number model, Cmd.none )
+        -- Shrink number ->
+        --     ( modifyArticle close number model, Cmd.none )
+        Toggle number ->
+            ( modifyArticle toggle number model, Cmd.none )
 
 
 
+-- type Msg
+--     = Toggle Article
+-- update : Msg -> Model -> ( Model, Cmd Msg )
+-- update msg model =
+--     case msg of
+--         Toggle article ->
+--             ( List.map (toggleArticle article) model, Cmd.none )
+-- toggleArticle targetArticle article =
+--     if article == targetArticle then
+--         { article | isExpanded = not article.isExpanded }
+--     else
+--         article
 ---- VIEW ----
 
 
@@ -112,7 +157,7 @@ fix this?
 --     ]
 
 
-viewArticle : Article -> Html Msg
+viewArticle : ArticleNumber -> Html Msg
 viewArticle article =
     let
         closeOrExpand =
@@ -121,13 +166,6 @@ viewArticle article =
 
             else
                 "expand"
-
-        shrinkOrExpand =
-            if article.isExpanded then
-                Shrink
-
-            else
-                Expand
     in
     div
         [ classList
@@ -135,7 +173,7 @@ viewArticle article =
             , ( "close", not article.isExpanded )
             , ( "article-open", article.isExpanded )
             ]
-        , onClick (shrinkOrExpand article)
+        , onClick (Toggle article)
         ]
         [ h2 [] [ text article.heading ]
         , p [ class "date" ] [ text article.date ]
