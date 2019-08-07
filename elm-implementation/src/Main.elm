@@ -135,12 +135,15 @@ viewArticle article number =
             , ( "close", not article.isExpanded )
             , ( "article-open", article.isExpanded )
             ]
-        , onClick (Toggle number)
         ]
         [ h2 [] [ text article.heading ]
         , p [ class "date" ] [ text article.date ]
         , p [] [ text article.content ]
-        , span [ class "expandButton" ] [ text closeOrExpand ]
+        , span
+            [ class "expandButton"
+            , onClick (Toggle number)
+            ]
+            [ text closeOrExpand ]
         ]
 
 
