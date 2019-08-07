@@ -18,6 +18,13 @@ type alias Article =
     }
 
 
+type ArticleNumber
+    = Article1
+    | Article2
+    | Article3
+    | Article4
+
+
 
 ---- MODEL ----
 
@@ -43,13 +50,6 @@ init =
 
 
 ---- UPDATE ----
-
-
-type ArticleNumber
-    = Article1
-    | Article2
-    | Article3
-    | Article4
 
 
 type Msg
@@ -80,27 +80,11 @@ modifyArticle function number model =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        -- Expand number ->
-        --     ( modifyArticle open number model, Cmd.none )
-        -- Shrink number ->
-        --     ( modifyArticle close number model, Cmd.none )
         Toggle number ->
             ( modifyArticle toggle number model, Cmd.none )
 
 
 
--- type Msg
---     = Toggle Article
--- update : Msg -> Model -> ( Model, Cmd Msg )
--- update msg model =
---     case msg of
---         Toggle article ->
---             ( List.map (toggleArticle article) model, Cmd.none )
--- toggleArticle targetArticle article =
---     if article == targetArticle then
---         { article | isExpanded = not article.isExpanded }
---     else
---         article
 ---- VIEW ----
 
 
@@ -133,28 +117,6 @@ view model =
             , viewArticle model.article4 Article4
             ]
         ]
-
-
-
--- , viewArticle "React vs Angular"
-
-
-{-| The following code doesn't work because of a type mismatch;
-the third element in the list is a `List Html msg` whereas
-the previous two elements are of type `Html msg`. How can I
-fix this?
--}
-
-
-
--- viewArticle : String -> String -> List String -> List (Html Msg)
--- viewArticle heading date content =
---     [ div [ class "article" ]
---         [ h2 [] [ text heading ]
---         , p [ class "date" ] [ text date ]
---         , List.map (\x -> p [] [ text x ]) content
---         ]
---     ]
 
 
 viewArticle : Article -> ArticleNumber -> Html Msg
