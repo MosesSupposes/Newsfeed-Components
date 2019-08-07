@@ -127,10 +127,10 @@ view model =
                 ]
             ]
         , div [ class "articles" ]
-            [ viewArticle model.article1
-            , viewArticle model.article2
-            , viewArticle model.article3
-            , viewArticle model.article4
+            [ viewArticle model.article1 Article1
+            , viewArticle model.article2 Article2
+            , viewArticle model.article3 Article3
+            , viewArticle model.article4 Article4
             ]
         ]
 
@@ -157,8 +157,8 @@ fix this?
 --     ]
 
 
-viewArticle : ArticleNumber -> Html Msg
-viewArticle article =
+viewArticle : Article -> ArticleNumber -> Html Msg
+viewArticle article number =
     let
         closeOrExpand =
             if article.isExpanded then
@@ -173,7 +173,7 @@ viewArticle article =
             , ( "close", not article.isExpanded )
             , ( "article-open", article.isExpanded )
             ]
-        , onClick (Toggle article)
+        , onClick (Toggle number)
         ]
         [ h2 [] [ text article.heading ]
         , p [ class "date" ] [ text article.date ]
